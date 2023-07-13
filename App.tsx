@@ -1,23 +1,28 @@
 import { StatusBar } from "expo-status-bar";
-import { FC } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { FC } from "react";
+import { ThemeProvider, styled } from "styled-components/native";
+import { theme } from "@theme/lightTheme";
 
 const App: FC = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider theme={theme}>
+      <Container>
+        <Text>Open up App.tsx to start working on your app!</Text>
+        <StatusBar style="auto" />
+      </Container>
+    </ThemeProvider>
   );
 };
 
 export default App;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const Container = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(props) => props.theme.COLORS.GRAY_700};
+`;
+
+const Text = styled.Text`
+  color: ${(props) => props.theme.COLORS.WHITE};
+`;
