@@ -20,4 +20,24 @@ export const theme: DefaultTheme = {
     GRAY_200: "#EFF0F0",
     GRAY_100: "#FAFAFA",
   },
+  FONTS: {
+    REGULAR: "Nunito_400Regular",
+    BOLD: "Nunito_700Bold",
+  },
+  FONT_SIZE: {
+    TINY: 12,
+    SMALL: 14,
+    MEDIUM: 16,
+    LARGE: 18,
+    EXTRA_LARGE: 24,
+    SUPER_LARGE: 32,
+  },
+  LINE_HEIGHT: {
+    TINY: 15.6,
+    SMALL: 18.2,
+    MEDIUM: 20.8,
+    LARGE: 23.4,
+    EXTRA_LARGE: 31.2,
+    SUPER_LARGE: 41.6,
+  },
 };

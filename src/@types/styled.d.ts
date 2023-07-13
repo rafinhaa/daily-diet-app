@@ -20,5 +20,25 @@ declare module "styled-components/native" {
       GRAY_200: string;
       GRAY_100: string;
     };
+    FONTS: {
+      REGULAR: string;
+      BOLD: string;
+    };
+    FONT_SIZE: {
+      TINY: number;
+      SMALL: number;
+      MEDIUM: number;
+      LARGE: number;
+      EXTRA_LARGE: number;
+      SUPER_LARGE: number;
+    };
+    LINE_HEIGHT: {
+      TINY: number;
+      SMALL: number;
+      MEDIUM: number;
+      LARGE: number;
+      EXTRA_LARGE: number;
+      SUPER_LARGE: number;
+    };
   }
 }
