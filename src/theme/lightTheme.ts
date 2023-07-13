@@ -4,9 +4,9 @@ export const theme: DefaultTheme = {
   COLORS: {
     WHITE: "#FFFFFF",
 
-    GREEN_LIGHT: "#639339",
+    GREEN_LIGHT: "#E5F0DB",
     GREEN_MID: "#CBE4B4",
-    GREEN_DARK: "#E5F0DB",
+    GREEN_DARK: "#639339",
 
     RED_LIGHT: "#F4E6E7",
     RED_MID: "#F3BABD",

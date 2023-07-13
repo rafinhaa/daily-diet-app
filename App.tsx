@@ -8,6 +8,7 @@ import {
 } from "@expo-google-fonts/nunito";
 
 import { theme } from "@theme/lightTheme";
+import { Loading } from "@components";
 
 const App: FC = () => {
   const [fontsLoaded] = useFonts({
@@ -15,14 +16,21 @@ const App: FC = () => {
     Nunito_700Bold,
   });
 
-  if (!fontsLoaded) return null;
-
-  return (
-    <ThemeProvider theme={theme}>
+  const RenderApp: FC<{
+    fontsLoaded: boolean;
+  }> = ({ fontsLoaded }) =>
+    fontsLoaded ? (
       <Container>
         <Text>Open up App.tsx to start working on your app!</Text>
         <StatusBar style="auto" />
       </Container>
+    ) : (
+      <Loading />
+    );
+
+  return (
+    <ThemeProvider theme={theme}>
+      <RenderApp fontsLoaded={fontsLoaded} />
     </ThemeProvider>
   );
 };
