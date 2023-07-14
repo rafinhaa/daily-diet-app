@@ -8,7 +8,7 @@ import {
 } from "@expo-google-fonts/nunito";
 
 import { theme } from "@theme/lightTheme";
-import { Loading } from "@components";
+import { Loading, Typographic } from "@components";
 
 const App: FC = () => {
   const [fontsLoaded] = useFonts({
@@ -21,7 +21,8 @@ const App: FC = () => {
   }> = ({ fontsLoaded }) =>
     fontsLoaded ? (
       <Container>
-        <Text>Open up App.tsx to start working on your app!</Text>
+        <Typographic.Title>Open up App.tsx</Typographic.Title>
+        <Typographic.Body>to start working on your app!</Typographic.Body>
         <StatusBar style="auto" />
       </Container>
     ) : (
@@ -41,12 +42,5 @@ const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme.COLORS.GRAY_700};
-`;
-
-const Text = styled.Text`
-  color: ${(props) => props.theme.COLORS.WHITE};
-  font-family: ${(props) => props.theme.FONTS.BOLD};
-  font-size: ${(props) => props.theme.FONT_SIZE.EXTRA_LARGE}px;
-  line-height: ${(props) => props.theme.FONT_SIZE.EXTRA_LARGE}px;
+  background-color: ${(props) => props.theme.COLORS.WHITE};
 `;
