@@ -12,8 +12,10 @@
     "@expo-google-fonts/nunito": "^0.2.3",
     "expo": "~48.0.18",
     "expo-status-bar": "~1.4.4",
+    "phosphor-react-native": "^1.1.2",
     "react": "18.2.0",
     "react-native": "0.71.8",
+    "react-native-svg": "13.4.0",
     "styled-components": "^6.0.4"
   },
   "devDependencies": {
