@@ -3,7 +3,6 @@ import { FC, useState } from "react";
 import { Container, Label, TextInput, Content } from "./styles";
 
 import { InputProps } from "./types";
-import { useTheme } from "styled-components/native";
 
 const Input: FC<InputProps> = ({ label, ...rest }) => {
   const [focus, setFocus] = useState(false);

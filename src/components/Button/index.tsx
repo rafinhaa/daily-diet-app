@@ -6,7 +6,7 @@ import { Container, Label } from "./styles";
 import { ButtonProps } from "./types";
 import { useTheme } from "styled-components/native";
 
-const Loading: FC<ButtonProps> = ({
+const Button: FC<ButtonProps> = ({
   label,
   icon,
   variant = "primary",
@@ -34,4 +34,4 @@ const Loading: FC<ButtonProps> = ({
   );
 };
 
-export default Loading;
+export default Button;
