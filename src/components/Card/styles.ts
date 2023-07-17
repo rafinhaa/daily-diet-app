@@ -39,6 +39,7 @@ export const Title = styled(Typographic.Title).attrs({
   bold: true,
 })`
   text-align: center;
+  margin-bottom: 8px;
 `;
 
 export const Description = styled(Typographic.Body).attrs({
