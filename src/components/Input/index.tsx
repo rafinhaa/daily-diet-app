@@ -4,11 +4,11 @@ import { Container, Label, TextInput, Content } from "./styles";
 
 import { InputProps } from "./types";
 
-const Input: FC<InputProps> = ({ label, ...rest }) => {
+const Input: FC<InputProps> = ({ label, containerStyle, ...rest }) => {
   const [focus, setFocus] = useState(false);
 
   return (
-    <Container>
+    <Container style={containerStyle}>
       <Label>{label}</Label>
       <Content focus={focus}>
         <TextInput

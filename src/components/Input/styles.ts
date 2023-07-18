@@ -1,20 +1,13 @@
-import { styled, css } from "styled-components/native";
+import { styled } from "styled-components/native";
 
 import Typographic from "@components/Typographic";
 
-export const Container = styled.View`
-  flex: 1;
-  width: 100%;
-  height: 70px;
-  max-height: 70px;
-`;
+export const Container = styled.View``;
 
 export const Content = styled.View<{ focus: boolean }>`
-  flex: 1;
   border-radius: 6px;
-  height: 48px;
-  max-height: 48px;
   padding: 14px;
+  width: 100%;
 
   border: 1px solid
     ${({ theme, focus }) =>
@@ -22,7 +15,6 @@ export const Content = styled.View<{ focus: boolean }>`
 `;
 
 export const TextInput = styled.TextInput`
-  flex: 1;
   font-family: ${({ theme }) => theme.FONTS.REGULAR};
   font-size: ${({ theme }) => theme.FONT_SIZE.MEDIUM}px;
   line-height: ${({ theme }) => theme.LINE_HEIGHT.MEDIUM}px;
@@ -32,5 +24,6 @@ export const Label = styled(Typographic.Title).attrs({
   bold: true,
   size: "SMALL",
 })`
+  width: 100%;
   color: ${({ theme }) => theme.COLORS.GRAY_600};
 `;

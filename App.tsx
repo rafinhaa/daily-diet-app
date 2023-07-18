@@ -8,7 +8,9 @@ import {
 } from "@expo-google-fonts/nunito";
 
 import { theme } from "@theme/lightTheme";
-import { Loading, Typographic } from "@components";
+import { Input, Loading, Typographic } from "@components";
+import { TextInput } from "react-native";
+import { NewMeal } from "@screens/index";
 
 const App: FC = () => {
   const [fontsLoaded] = useFonts({
@@ -18,16 +20,7 @@ const App: FC = () => {
 
   const RenderApp: FC<{
     fontsLoaded: boolean;
-  }> = ({ fontsLoaded }) =>
-    fontsLoaded ? (
-      <Container>
-        <Typographic.Title>Open up App.tsx</Typographic.Title>
-        <Typographic.Body>to start working on your app!</Typographic.Body>
-        <StatusBar style="auto" />
-      </Container>
-    ) : (
-      <Loading />
-    );
+  }> = ({ fontsLoaded }) => (fontsLoaded ? <NewMeal /> : <Loading />);
 
   return (
     <ThemeProvider theme={theme}>
@@ -43,4 +36,5 @@ const Container = styled.View`
   align-items: center;
   justify-content: center;
   background-color: ${(props) => props.theme.COLORS.WHITE};
+  padding: 20px;
 `;

@@ -35,7 +35,7 @@ export const Container = styled.TouchableOpacity<ButtonPropsStyle>`
 
 export const Label = styled(Typographic.Body).attrs({
   bold: true,
-  size: "TINY",
+  size: "SMALL",
 })<ButtonPropsStyle>`
   color: ${({ variant, theme }) =>
     variant === "primary" ? theme.COLORS.WHITE : theme.COLORS.GRAY_700};

@@ -11,7 +11,7 @@ export const Container = styled.View<StyledHeaderProps>`
   width: 100%;
   align-items: center;
   justify-content: center;
-  height: 200px;
+  height: ${({ type }) => (type === "info" ? 132 : 200)}px;
   padding: 24px;
 
   ${({ theme, type }) =>
