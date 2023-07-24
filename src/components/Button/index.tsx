@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { PencilSimpleLine, Trash } from "phosphor-react-native";
+import { PencilSimpleLine, Plus, Trash } from "phosphor-react-native";
 
 import { Container, Label } from "./styles";
 
@@ -19,6 +19,7 @@ const Button: FC<ButtonProps> = ({
     const Icon = {
       edit: PencilSimpleLine,
       delete: Trash,
+      plus: Plus,
     }[icon];
 
     const color = variant === "primary" ? COLORS.WHITE : COLORS.GRAY_700;
