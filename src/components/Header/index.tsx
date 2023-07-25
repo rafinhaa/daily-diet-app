@@ -5,7 +5,7 @@ import { HeaderProps } from "./types";
 
 const Header: FC<HeaderProps> = ({ title, children, type }) => {
   return (
-    <Container type={type}>
+    <Container type={type} hasChildren={!!children}>
       <Content>
         <BackButton>
           <BackIcon type={type} />

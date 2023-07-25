@@ -5,13 +5,15 @@ import Typographic from "@components/Typographic";
 
 import { HeaderProps } from "./types";
 
-type StyledHeaderProps = Pick<HeaderProps, "type">;
+type StyledHeaderProps = Pick<HeaderProps, "type"> & {
+  hasChildren?: boolean;
+};
 
 export const Container = styled.View<StyledHeaderProps>`
   width: 100%;
   align-items: center;
   justify-content: center;
-  height: ${({ type }) => (type === "info" ? 132 : 200)}px;
+  height: ${({ hasChildren }) => (!hasChildren ? 132 : 200)}px;
   padding: 24px;
 
   ${({ theme, type }) =>

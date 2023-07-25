@@ -27,8 +27,8 @@ export const Container = styled.TouchableOpacity<ButtonPropsStyle>`
     variant === "secondary" &&
     css`
       background-color: ${disabled
-        ? theme.COLORS.WHITE
-        : theme.COLORS.GRAY_300};
+        ? theme.COLORS.GRAY_300
+        : theme.COLORS.WHITE};
       border: 1px solid ${theme.COLORS.GRAY_700};
     `}
 `;
