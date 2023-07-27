@@ -1,9 +1,22 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Container, MealInfo } from "./styles";
-import { Button, Header, ScreenContent, Space, Typographic } from "@components";
+import {
+  Button,
+  Header,
+  Modal,
+  ScreenContent,
+  Space,
+  Typographic,
+} from "@components";
 import { Tag } from "./components";
 
 const ViewMeal: FC = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handlePressDeleteMeal = () => {
+    setShowModal(true);
+  };
+
   return (
     <Container>
       <Header title="Nova refeição" type="primary" />
@@ -25,9 +38,22 @@ const ViewMeal: FC = () => {
         </MealInfo>
         <Button icon="edit" label="Editar refeição" />
         <Space size={8} />
-        <Button variant="secondary" icon="delete" label="Excluir refeição" />
+        <Button
+          variant="secondary"
+          icon="delete"
+          label="Excluir refeição"
+          onPress={handlePressDeleteMeal}
+        />
         <Space size={32} />
       </ScreenContent>
+      <Modal
+        title="Deseja realmente excluir o registro da refeição?"
+        primaryButtonLabel="Sim, excluir"
+        secondaryButtonLabel="Cancelar"
+        visible={showModal}
+        onRequestClose={() => setShowModal(false)}
+        onRequestConfirm={() => {}}
+      />
     </Container>
   );
 };
