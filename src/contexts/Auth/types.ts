@@ -1,13 +1,18 @@
+import { SignInData } from "@services/useSignIn/types";
 import { PropsWithChildren } from "react";
 
 export type AuthProviderProps = PropsWithChildren;
 
-export type User = {
+export type User = Pick<SignInData, "user">;
+
+export type LoginData = {
   email: string;
   password: string;
 };
 
 export type AuthContextData = {
   user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  signIn: (data: LoginData) => Promise<void>;
+  isLoadingSignIn: boolean;
+  signInError: string | null;
 };

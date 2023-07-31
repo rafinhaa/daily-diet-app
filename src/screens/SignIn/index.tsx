@@ -1,18 +1,57 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Container, Logo } from "./styles";
-import { Button, Input, Space } from "@components";
+import { Button, Input, Modal, Space } from "@components";
 
 import logo from "@assets/images/logo.png";
+import useAuth from "@hooks/useAuth";
 
 const SignIn: FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
+  const { signIn, isLoadingSignIn, signInError } = useAuth();
+
+  const handlePressSignIn = async () => {
+    try {
+      await signIn({
+        email,
+        password,
+      });
+    } catch {
+      setShowModal(true);
+    }
+  };
+
   return (
     <Container>
       <Logo source={logo} />
-      <Input label="Email" autoCorrect={false} keyboardType="email-address" />
+      <Input
+        label="Email"
+        autoCorrect={false}
+        autoCapitalize="none"
+        keyboardType="email-address"
+        onChangeText={setEmail}
+      />
       <Space size={12} />
-      <Input label="Senha" secureTextEntry={true} autoCorrect={false} />
+      <Input
+        label="Senha"
+        secureTextEntry={true}
+        autoCorrect={false}
+        onChangeText={setPassword}
+      />
       <Space size={16} />
-      <Button label="Entrar" />
+      <Button
+        label="Entrar"
+        onPress={handlePressSignIn}
+        isLoading={isLoadingSignIn}
+      />
+      <Modal
+        visible={showModal}
+        title={signInError}
+        primaryButtonLabel="Ok"
+        onRequestConfirm={() => setShowModal(false)}
+      />
     </Container>
   );
 };

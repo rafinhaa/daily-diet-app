@@ -5,11 +5,13 @@ import { Container, Label } from "./styles";
 
 import { ButtonProps } from "./types";
 import { useTheme } from "styled-components/native";
+import Loading from "../Loading";
 
 const Button: FC<ButtonProps> = ({
   label,
   icon,
   variant = "primary",
+  isLoading = false,
   ...rest
 }) => {
   const { COLORS } = useTheme();
@@ -30,7 +32,7 @@ const Button: FC<ButtonProps> = ({
   return (
     <Container activeOpacity={0.9} variant={variant} {...rest}>
       <IconMapping />
-      <Label variant={variant}>{label}</Label>
+      {isLoading ? <Loading /> : <Label variant={variant}>{label}</Label>}
     </Container>
   );
 };

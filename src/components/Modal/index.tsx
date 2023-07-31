@@ -27,15 +27,19 @@ const Modal: FC<ModalProps> = ({
     <Container animationType="fade" transparent={true} {...rest}>
       <Backdrop onPress={onRequestClose} />
       <Content onLayout={handleContentHeight} topDistance={topDistance}>
-        <Title size="LARGE">{title}</Title>
+        {title && <Title size="LARGE">{title}</Title>}
         <Space size={32} />
         <ButtonWrapper>
-          <Button
-            label={secondaryButtonLabel}
-            variant="secondary"
-            onPress={onRequestClose}
-          />
-          <Button label={primaryButtonLabel} onPress={onRequestConfirm} />
+          {secondaryButtonLabel && (
+            <Button
+              label={secondaryButtonLabel}
+              variant="secondary"
+              onPress={onRequestClose}
+            />
+          )}
+          {primaryButtonLabel && (
+            <Button label={primaryButtonLabel} onPress={onRequestConfirm} />
+          )}
         </ButtonWrapper>
       </Content>
     </Container>

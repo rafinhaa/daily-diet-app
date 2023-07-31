@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React, { FC } from "react";
 import { ThemeProvider, styled } from "styled-components/native";
 import {
@@ -8,9 +7,9 @@ import {
 } from "@expo-google-fonts/nunito";
 
 import { theme } from "@theme/lightTheme";
-import { Input, Loading, Typographic } from "@components";
-import { TextInput } from "react-native";
-import { NewMeal } from "@screens/index";
+import { Loading } from "@components";
+import { SignIn } from "@screens/index";
+import { AuthProvider } from "@contexts/Auth";
 
 const App: FC = () => {
   const [fontsLoaded] = useFonts({
@@ -20,7 +19,14 @@ const App: FC = () => {
 
   const RenderApp: FC<{
     fontsLoaded: boolean;
-  }> = ({ fontsLoaded }) => (fontsLoaded ? <NewMeal /> : <Loading />);
+  }> = ({ fontsLoaded }) =>
+    fontsLoaded ? (
+      <AuthProvider>
+        <SignIn />
+      </AuthProvider>
+    ) : (
+      <Loading />
+    );
 
   return (
     <ThemeProvider theme={theme}>
@@ -30,11 +36,3 @@ const App: FC = () => {
 };
 
 export default App;
-
-const Container = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  background-color: ${(props) => props.theme.COLORS.WHITE};
-  padding: 20px;
-`;
