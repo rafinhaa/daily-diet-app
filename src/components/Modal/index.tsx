@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { Backdrop, ButtonWrapper, Container, Content, Title } from "./styles";
-import { Button, Space } from "@components";
+import Button from "../Button";
+import Space from "../Space";
 import { ModalProps } from "./types";
 import { Dimensions, LayoutChangeEvent } from "react-native";
 
