@@ -3,6 +3,14 @@ import { Feedback, NewMeal, Home, Stats, ViewMeal } from "@screens";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
+export type AppRoutesParamList = {
+  Home: undefined;
+  Stats: undefined;
+  Feedback: undefined;
+  NewMeal: undefined;
+  ViewMeal: undefined;
+};
+
 export function AppRoutes() {
   return (
     <Navigator screenOptions={{ headerShown: false }}>
