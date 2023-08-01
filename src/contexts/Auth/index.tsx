@@ -16,12 +16,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signIn = async ({ email, password }: LoginData) => {
     try {
-      const response = await handleSignIn({
+      const { user } = await handleSignIn({
         email,
         password,
       });
 
-      setUser(response);
+      setUser(user);
     } catch (error) {
       throw error;
     }

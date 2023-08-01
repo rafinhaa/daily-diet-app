@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 
 export type AuthProviderProps = PropsWithChildren;
 
-export type User = Pick<SignInData, "user">;
+export type User = SignInData["user"];
 
 export type LoginData = {
   email: string;
