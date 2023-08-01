@@ -1,11 +1,14 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Container, Header, Logo, User } from "./styles";
-import { Button, Card, Space, Typographic } from "@components";
+import { Button, Card, Loading, Space, Typographic } from "@components";
 
 import logo from "@assets/images/logo.png";
 import user from "@assets/images/user.png";
 import { SectionList } from "react-native";
 import { MealItem } from "./components";
+import { useNavigation } from "@react-navigation/native";
+import { useMeals } from "@hooks";
+import { toPercent } from "@utils";
 
 const DATA = [
   {
@@ -45,7 +48,21 @@ const DATA = [
 ];
 
 const Home: FC = () => {
-  return (
+  const { handleGetStats, stats, statsInfo, isLoadingStats } = useMeals();
+  const { navigate } = useNavigation();
+
+  const handlePressCardStats = () => {
+    navigate("Stats");
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      await handleGetStats();
+    };
+    getData();
+  }, []);
+
+  return !isLoadingStats ? (
     <Container>
       <Header>
         <Logo source={logo} />
@@ -53,11 +70,11 @@ const Home: FC = () => {
       </Header>
       <Space size={32} />
       <Card
-        type="primary"
+        type={statsInfo}
         description="das refeições dentro da dieta"
-        title="90,86%"
+        title={toPercent(stats.dietPercentage)}
         titleSize="SUPER_LARGE"
-        onCardPress={() => {}}
+        onCardPress={handlePressCardStats}
       />
       <Space size={32} />
       <Typographic.Body bold={false} size="MEDIUM">
@@ -77,6 +94,8 @@ const Home: FC = () => {
         )}
       />
     </Container>
+  ) : (
+    <Loading />
   );
 };
 

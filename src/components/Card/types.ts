@@ -1,7 +1,7 @@
 import { DefaultTheme } from "styled-components/native";
 
-export type CardProps = {
-  title: string;
+export type CardProps<T> = {
+  title: T;
   description: string;
   type: "primary" | "secondary" | "info";
   titleSize?: keyof Pick<
