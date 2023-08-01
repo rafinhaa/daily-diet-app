@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { ThemeProvider, styled } from "styled-components/native";
+import { ThemeProvider } from "styled-components/native";
 import {
   useFonts,
   Nunito_400Regular,
@@ -8,8 +8,8 @@ import {
 
 import { theme } from "@theme/lightTheme";
 import { Loading } from "@components";
-import { SignIn } from "@screens/index";
 import { AuthProvider } from "@contexts/Auth";
+import { Routes } from "@routes/index";
 
 const App: FC = () => {
   const [fontsLoaded] = useFonts({
@@ -22,7 +22,7 @@ const App: FC = () => {
   }> = ({ fontsLoaded }) =>
     fontsLoaded ? (
       <AuthProvider>
-        <SignIn />
+        <Routes />
       </AuthProvider>
     ) : (
       <Loading />
