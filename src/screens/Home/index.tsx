@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Container, Header, Logo, User } from "./styles";
 import { Button, Card, Loading, Space, Typographic } from "@components";
 
@@ -48,21 +48,14 @@ const DATA = [
 ];
 
 const Home: FC = () => {
-  const { handleGetStats, stats, statsInfo, isLoadingStats } = useMeals();
+  const { stats, statsInfo, meals } = useMeals();
   const { navigate } = useNavigation();
 
   const handlePressCardStats = () => {
     navigate("Stats");
   };
 
-  useEffect(() => {
-    const getData = async () => {
-      await handleGetStats();
-    };
-    getData();
-  }, []);
-
-  return !isLoadingStats ? (
+  return (
     <Container>
       <Header>
         <Logo source={logo} />
@@ -94,8 +87,6 @@ const Home: FC = () => {
         )}
       />
     </Container>
-  ) : (
-    <Loading />
   );
 };
 

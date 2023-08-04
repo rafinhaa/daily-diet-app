@@ -1,4 +1,4 @@
-export type GetStatsParams = { userId: string };
+export type GetStatsParams = { userId: string; makeRequest?: boolean };
 
 export type GetStatsData = {
   stats: {

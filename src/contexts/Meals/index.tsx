@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext } from "react";
 
 import {
   MealsContextData,
@@ -6,36 +6,35 @@ import {
   Stats,
   StatsInfoEnum,
 } from "./types";
-import { useStats } from "@services";
-import useAuth from "@hooks/useAuth";
+import { getMeals, useStats } from "@services";
+import { Loading } from "@components";
 
 const MealsContext = createContext({} as MealsContextData);
 
-const MealsProvider = ({ children }: MealsProviderProps) => {
-  const { user } = useAuth();
-  const [stats, setStats] = useState<Stats>({} as Stats);
-  const statsInfo =
-    stats.dietPercentage > 50 ? StatsInfoEnum.primary : StatsInfoEnum.secondary;
+const MealsProvider = ({ userId, children }: MealsProviderProps) => {
+  const { data: stats } = useStats({
+    userId,
+    makeRequest: true,
+  });
+  const { data: meals } = getMeals({
+    userId,
+    makeRequest: true,
+  });
 
-  const { getStats, isLoading: isLoadingStats } = useStats();
-
-  const handleGetStats = async () => {
-    try {
-      const { stats } = await getStats({
-        userId: user?.id as string,
-      });
-
-      setStats(stats);
-    } catch (error) {
-      throw error;
-    }
-  };
+  const hasLoadedAllData = [stats, meals].some(Boolean);
 
   return (
     <MealsContext.Provider
-      value={{ stats, statsInfo, isLoadingStats, handleGetStats }}
+      value={{
+        stats: stats?.stats as Stats,
+        statsInfo:
+          stats?.stats.dietPercentage! > 50
+            ? StatsInfoEnum.primary
+            : StatsInfoEnum.secondary,
+        meals: meals?.meals || [],
+      }}
     >
-      {children}
+      {hasLoadedAllData ? children : <Loading />}
     </MealsContext.Provider>
   );
 };

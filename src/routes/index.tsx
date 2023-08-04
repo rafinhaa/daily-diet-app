@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { AppRoutes } from "./app.routes";
-import useAuth from "@hooks/useAuth";
+import { useAuth } from "@hooks";
 import { SignInRoutes } from "./signIn.routes";
-import { MealsProvider } from "@contexts/Meals";
+import { MealsProvider } from "@contexts";
 
 export const Routes = () => {
   const { user } = useAuth();
@@ -10,7 +10,7 @@ export const Routes = () => {
   return (
     <NavigationContainer>
       {user ? (
-        <MealsProvider>
+        <MealsProvider userId={user.id}>
           <AppRoutes />
         </MealsProvider>
       ) : (

@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { api } from "../api";
+import { api } from "../../api";
 
-import { GetStatsParams, GetStatsData } from "./types";
+import { GetMealsParams, GetMealsData } from "./types";
 import { AxiosError } from "axios";
 
-const useStats = ({ userId, makeRequest = false }: GetStatsParams) => {
+const getMeals = ({ userId, makeRequest = false }: GetMealsParams) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<GetStatsData | null>(null);
+  const [data, setData] = useState<GetMealsData | null>(null);
 
-  const getStats = async () => {
+  const getMeals = async () => {
     try {
       setIsLoading(true);
-      const { data } = await api.get<GetStatsData>(`user/${userId}/stats`);
+      const { data } = await api.get<GetMealsData>(`meal/${userId}/all`);
 
       setData(data);
     } catch (error) {
@@ -21,7 +21,7 @@ const useStats = ({ userId, makeRequest = false }: GetStatsParams) => {
           setError("Usuário e/ou senha inválidos!");
         }
         if (error.response?.data?.statusCode === 401) {
-          setError("Usuário e/ou senha inválidos!");
+          setError("Sem permissão de acesso!");
         }
         throw error;
       }
@@ -34,10 +34,10 @@ const useStats = ({ userId, makeRequest = false }: GetStatsParams) => {
 
   useEffect(() => {
     if (!makeRequest) return;
-    getStats();
+    getMeals();
   }, []);
 
   return { isLoading, error, data };
 };
 
-export default useStats;
+export default getMeals;
