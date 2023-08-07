@@ -11,6 +11,7 @@ import { useMeals } from "@hooks";
 import { toPercent } from "@utils";
 
 interface ListMeal {
+  id: string;
   meal: string;
   isDiet: boolean;
   time: string;
@@ -32,6 +33,7 @@ const Home: FC = () => {
     }.${createdAtDate.getFullYear()}`;
 
     const meal = {
+      id: item.id,
       meal: item.name,
       isDiet: item.onTheDiet === 1,
       time: createdAtDate.toLocaleTimeString([], {
@@ -55,6 +57,10 @@ const Home: FC = () => {
 
     return listMeals;
   }, []);
+
+  const handlePressMeal = (id: string) => {
+    navigate("ViewMeal", { mealId: id });
+  };
 
   const handlePressCardStats = () => {
     navigate("Stats");
@@ -83,9 +89,14 @@ const Home: FC = () => {
       <Space size={32} />
       <SectionList
         sections={listMeals}
-        keyExtractor={(item, index) => item.meal + index}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <MealItem meal={item.meal} isDiet={item.isDiet} time={item.time} />
+          <MealItem
+            meal={item.meal}
+            isDiet={item.isDiet}
+            time={item.time}
+            onPress={() => handlePressMeal(item.id)}
+          />
         )}
         renderSectionHeader={({ section: { title } }) => (
           <Typographic.Title size="LARGE">{title}</Typographic.Title>

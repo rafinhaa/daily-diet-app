@@ -8,7 +8,9 @@ export type AppRoutesParamList = {
   Stats: undefined;
   Feedback: undefined;
   NewMeal: undefined;
-  ViewMeal: undefined;
+  ViewMeal: {
+    mealId: string;
+  };
 };
 
 export function AppRoutes() {

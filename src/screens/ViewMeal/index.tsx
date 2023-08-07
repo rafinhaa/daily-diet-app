@@ -9,31 +9,52 @@ import {
   Typographic,
 } from "@components";
 import { Tag } from "./components";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { getMeal } from "@services/index";
+import { AppRoutesParamList } from "@routes/app.routes";
 
 const ViewMeal: FC = () => {
   const [showModal, setShowModal] = useState(false);
+  const { params } = useRoute<RouteProp<AppRoutesParamList, "ViewMeal">>();
+
+  const { data: meal } = getMeal({
+    makeRequest: true,
+    mealId: params.mealId,
+  });
 
   const handlePressDeleteMeal = () => {
     setShowModal(true);
   };
 
+  function formatDate(eatedAt: string) {
+    const date = new Date(eatedAt);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear()).slice(2);
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${day}/${month}/${year} às ${hours}:${minutes}`;
+  }
+
   return (
     <Container>
-      <Header title="Nova refeição" type="primary" />
+      <Header
+        title="Refeição"
+        type={meal?.onTheDiet === 1 ? "primary" : "secondary"}
+      />
       <ScreenContent>
         <MealInfo>
           <Space size={32} />
-          <Typographic.Title>Sanduíche</Typographic.Title>
-          <Typographic.Body bold={false}>
-            Sanduíche de pão integral com atum e salada de alface e tomate
-          </Typographic.Body>
+          <Typographic.Title>{meal?.name}</Typographic.Title>
+          <Typographic.Body bold={false}>{meal?.description}</Typographic.Body>
           <Space size={24} />
           <Typographic.Title size="SMALL">Data e hora</Typographic.Title>
           <Typographic.Body size="MEDIUM" bold={false}>
-            12/08/2022 ás 16:00
+            {formatDate(meal?.eatedAt!)}
           </Typographic.Body>
           <Space size={24} />
-          <Tag diet />
+          <Tag diet={!!meal?.onTheDiet} />
           <Space size={24} />
         </MealInfo>
         <Button icon="edit" label="Editar refeição" />
