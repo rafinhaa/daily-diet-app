@@ -9,21 +9,32 @@ import {
   Typographic,
 } from "@components";
 import { Tag } from "./components";
-import { RouteProp, useRoute } from "@react-navigation/native";
-import { getMeal } from "@services/index";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { deleteMeal, getMeal } from "@services/index";
 import { AppRoutesParamList } from "@routes/app.routes";
 
 const ViewMeal: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const { params } = useRoute<RouteProp<AppRoutesParamList, "ViewMeal">>();
+  const { goBack } = useNavigation();
 
   const { data: meal } = getMeal({
     makeRequest: true,
     mealId: params.mealId,
   });
 
+  const { handleDeleteMeal } = deleteMeal({
+    mealId: params.mealId,
+  });
+
   const handlePressDeleteMeal = () => {
     setShowModal(true);
+  };
+
+  const handlePressOnConfirmDeleteMeal = async () => {
+    await handleDeleteMeal();
+    setShowModal(false);
+    goBack();
   };
 
   function formatDate(eatedAt: string) {
@@ -73,7 +84,7 @@ const ViewMeal: FC = () => {
         secondaryButtonLabel="Cancelar"
         visible={showModal}
         onRequestClose={() => setShowModal(false)}
-        onRequestConfirm={() => {}}
+        onRequestConfirm={handlePressOnConfirmDeleteMeal}
       />
     </Container>
   );
