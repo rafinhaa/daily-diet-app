@@ -1,17 +1,36 @@
-import { styled } from "styled-components/native";
+import { styled, css } from "styled-components/native";
 
 import Typographic from "@components/Typographic";
 
+type ContentProps = {
+  focus: boolean;
+  error: boolean;
+};
+
 export const Container = styled.View``;
 
-export const Content = styled.View<{ focus: boolean }>`
+export const Content = styled.View<ContentProps>`
   border-radius: 6px;
   padding: 14px;
   width: 100%;
 
-  border: 1px solid
-    ${({ theme, focus }) =>
-      focus ? theme.COLORS.GRAY_700 : theme.COLORS.GRAY_300};
+  ${({ theme, focus, error }) => {
+    if (error) {
+      return css`
+        border: 1px solid ${theme.COLORS.RED_DARK};
+      `;
+    }
+
+    if (focus) {
+      return css`
+        border: 1px solid ${theme.COLORS.GRAY_700};
+      `;
+    }
+
+    return css`
+      border: 1px solid ${theme.COLORS.GRAY_300};
+    `;
+  }}
 `;
 
 export const TextInput = styled.TextInput`

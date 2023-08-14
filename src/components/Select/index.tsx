@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Circle } from "phosphor-react-native";
 import { useTheme } from "styled-components/native";
 
@@ -8,7 +8,7 @@ import { Container, SelectButton } from "./styles";
 
 import { SelectOptionsProps, SelectProps } from "./types";
 
-const Select: FC<SelectProps> = ({ onSelect }) => {
+const Select: FC<SelectProps> = ({ onSelect, selected }) => {
   const { COLORS } = useTheme();
   const [isSelected, setIsSelected] = useState<SelectOptionsProps>(null);
 
@@ -34,6 +34,10 @@ const Select: FC<SelectProps> = ({ onSelect }) => {
     setIsSelected(option);
     onSelect(option);
   };
+
+  useEffect(() => {
+    setIsSelected(selected);
+  }, [selected]);
 
   return (
     <Container>

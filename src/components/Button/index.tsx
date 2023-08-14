@@ -30,7 +30,12 @@ const Button: FC<ButtonProps> = ({
   };
 
   return (
-    <Container activeOpacity={0.9} variant={variant} {...rest}>
+    <Container
+      activeOpacity={0.9}
+      variant={variant}
+      disabled={isLoading}
+      {...rest}
+    >
       <IconMapping />
       {isLoading ? <Loading /> : <Label variant={variant}>{label}</Label>}
     </Container>
