@@ -1,3 +1,5 @@
+import { Meal } from "../getMeals/types";
+
 export type CreateMealParams = {
   userId: string;
   meal: {
@@ -8,14 +10,7 @@ export type CreateMealParams = {
   };
 };
 
-export type CreateMealData = {
-  id: string;
-  name: string;
-  description: string;
-  eatedAt: number;
-  onTheDiet: string;
-  createdAt: string;
-};
+export type CreateMealData = Meal;
 
 export type CreateMealResponse = {
   meal: CreateMealData;

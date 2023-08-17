@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { api } from "../../api";
 
 import { DeleteMealParams } from "./types";
 import { AxiosError } from "axios";
 
-const deleteMeal = ({ mealId, makeRequest = false }: DeleteMealParams) => {
+const deleteMeal = (props?: DeleteMealParams) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleDeleteMeal = async () => {
+  const handleDeleteMeal = async (mealId: string) => {
     try {
       setIsLoading(true);
       await api.delete(`meal/${mealId}`);
@@ -31,11 +31,6 @@ const deleteMeal = ({ mealId, makeRequest = false }: DeleteMealParams) => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (!makeRequest) return;
-    handleDeleteMeal();
-  }, []);
 
   return { isLoading, error, handleDeleteMeal };
 };

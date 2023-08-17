@@ -10,20 +10,18 @@ import {
 } from "@components";
 import { Tag } from "./components";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { deleteMeal, getMeal } from "@services/index";
+import { getMeal } from "@services";
 import { AppRoutesParamList } from "@routes/app.routes";
+import { useMeals } from "@hooks";
 
 const ViewMeal: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const { params } = useRoute<RouteProp<AppRoutesParamList, "ViewMeal">>();
   const { goBack } = useNavigation();
+  const { deleteViewedMeal } = useMeals();
 
   const { data: meal } = getMeal({
     makeRequest: true,
-    mealId: params.mealId,
-  });
-
-  const { handleDeleteMeal } = deleteMeal({
     mealId: params.mealId,
   });
 
@@ -32,7 +30,7 @@ const ViewMeal: FC = () => {
   };
 
   const handlePressOnConfirmDeleteMeal = async () => {
-    await handleDeleteMeal();
+    await deleteViewedMeal(params.mealId);
     setShowModal(false);
     goBack();
   };

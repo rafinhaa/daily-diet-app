@@ -1,8 +1,7 @@
 import { FC, useState } from "react";
 import { Container, Form, FormRow, SelectWrapper } from "./styles";
 import { View } from "react-native";
-import { createMeal } from "@services";
-import { useAuth } from "@hooks";
+import { useAuth, useMeals } from "@hooks";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -55,9 +54,11 @@ const newMealFormSchema = z.object({
 type NewMealFormInputs = z.infer<typeof newMealFormSchema>;
 
 const NewMeal: FC = () => {
+  const { createNewMeal } = useMeals();
   const { goBack } = useNavigation();
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     control,
@@ -67,9 +68,6 @@ const NewMeal: FC = () => {
   } = useForm<NewMealFormInputs>({
     resolver: zodResolver(newMealFormSchema),
   });
-
-  const { user } = useAuth();
-  const { handleCreateMeal, error } = createMeal();
 
   const formatTime = (text: string) => {
     const numericText = text.replace(/\D/g, "");
@@ -106,18 +104,16 @@ const NewMeal: FC = () => {
 
   const handlePressNewMeal = async (data: NewMealFormInputs) => {
     try {
-      await handleCreateMeal({
-        userId: user?.id!,
-        meal: {
-          name: data.name,
-          description: data.description,
-          eatedAt: formatDateTimeToISO(data.date, data.time),
-          onTheDiet: data.onTheDiet === "Sim" ? true : false,
-        },
+      await createNewMeal({
+        name: data.name,
+        description: data.description,
+        eatedAt: formatDateTimeToISO(data.date, data.time),
+        onTheDiet: data.onTheDiet === "Sim" ? true : false,
       });
       reset();
       setShowConfirmationModal(true);
-    } catch {
+    } catch (error) {
+      setErrorMessage(error as string);
       setShowErrorModal(true);
     }
   };
@@ -196,10 +192,7 @@ const NewMeal: FC = () => {
                     Está dentro da dieta?
                   </Typographic.Title>
                   <Select
-                    onSelect={(option) => {
-                      console.log("mudando para ", option);
-                      onChange(option);
-                    }}
+                    onSelect={(option) => onChange(option)}
                     selected={value}
                   />
                 </SelectWrapper>
@@ -226,7 +219,7 @@ const NewMeal: FC = () => {
         }}
       />
       <Modal
-        title={error}
+        title={errorMessage}
         primaryButtonLabel="OK"
         visible={showErrorModal}
         onRequestConfirm={() => {

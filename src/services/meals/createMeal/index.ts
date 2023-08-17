@@ -17,6 +17,7 @@ const createMeal = () => {
       });
 
       setData(data.meal);
+      return data.meal;
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.data?.statusCode === 400) {

@@ -27,10 +27,12 @@ const Home: FC = () => {
   const { navigate } = useNavigation();
 
   const listMeals = meals.reduce((listMeals: DateEntry[], item) => {
-    const createdAtDate = new Date(item.createdAt);
+    const createdAtDate = new Date(item.eatedAt);
     const formattedDate = `${createdAtDate.getDate()}.${
       createdAtDate.getMonth() + 1
     }.${createdAtDate.getFullYear()}`;
+
+    createdAtDate.setHours(createdAtDate.getHours() + 3);
 
     const meal = {
       id: item.id,
@@ -57,6 +59,10 @@ const Home: FC = () => {
 
     return listMeals;
   }, []);
+
+  const handlePressNewMeal = () => {
+    navigate("NewMeal");
+  };
 
   const handlePressMeal = (id: string) => {
     navigate("ViewMeal", { mealId: id });
@@ -85,7 +91,7 @@ const Home: FC = () => {
         Refeições
       </Typographic.Body>
       <Space size={4} />
-      <Button label="Nova refeição" icon="plus" />
+      <Button label="Nova refeição" icon="plus" onPress={handlePressNewMeal} />
       <Space size={32} />
       <SectionList
         sections={listMeals}
