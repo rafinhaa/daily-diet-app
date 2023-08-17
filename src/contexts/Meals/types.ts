@@ -21,11 +21,13 @@ export type MealsContextData = {
   meals: Meals;
   createNewMeal: (meal: NewMeal) => Promise<void>;
   deleteViewedMeal: (mealId: string) => Promise<void>;
+  editTheMeal: (meal: NewMeal) => Promise<void>;
 };
 
 export type NewMeal = Omit<
   Meal,
   "id" | "onTheDiet" | "createdAt" | "updatedAt"
 > & {
+  id?: string;
   onTheDiet: boolean;
 };

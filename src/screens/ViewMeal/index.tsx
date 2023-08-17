@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { Container, MealInfo } from "./styles";
 import {
   Button,
@@ -9,21 +9,23 @@ import {
   Typographic,
 } from "@components";
 import { Tag } from "./components";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { getMeal } from "@services";
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { AppRoutesParamList } from "@routes/app.routes";
 import { useMeals } from "@hooks";
+import { Meal } from "@services/meals/getMeals/types";
 
 const ViewMeal: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const { params } = useRoute<RouteProp<AppRoutesParamList, "ViewMeal">>();
-  const { goBack } = useNavigation();
-  const { deleteViewedMeal } = useMeals();
+  const { goBack, navigate } = useNavigation();
+  const { deleteViewedMeal, meals } = useMeals();
 
-  const { data: meal } = getMeal({
-    makeRequest: true,
-    mealId: params.mealId,
-  });
+  const [meal, setMeal] = useState<Meal>({} as Meal);
 
   const handlePressDeleteMeal = () => {
     setShowModal(true);
@@ -33,6 +35,12 @@ const ViewMeal: FC = () => {
     await deleteViewedMeal(params.mealId);
     setShowModal(false);
     goBack();
+  };
+
+  const handlePressEditMeal = () => {
+    navigate("NewMeal", {
+      meal: meal!,
+    });
   };
 
   function formatDate(eatedAt: string) {
@@ -45,6 +53,12 @@ const ViewMeal: FC = () => {
 
     return `${day}/${month}/${year} às ${hours}:${minutes}`;
   }
+
+  useFocusEffect(
+    useCallback(() => {
+      setMeal(meals.find((meal) => meal.id === params.mealId)!);
+    }, [meals])
+  );
 
   return (
     <Container>
@@ -66,7 +80,11 @@ const ViewMeal: FC = () => {
           <Tag diet={!!meal?.onTheDiet} />
           <Space size={24} />
         </MealInfo>
-        <Button icon="edit" label="Editar refeição" />
+        <Button
+          icon="edit"
+          label="Editar refeição"
+          onPress={handlePressEditMeal}
+        />
         <Space size={8} />
         <Button
           variant="secondary"

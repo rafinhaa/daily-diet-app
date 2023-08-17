@@ -9,6 +9,7 @@ import {
 } from "./types";
 import { createMeal, getMeals, useStats, deleteMeal } from "@services";
 import { Loading } from "@components";
+import { editMeal } from "@services";
 
 const MealsContext = createContext({} as MealsContextData);
 
@@ -23,8 +24,9 @@ const MealsProvider = ({ userId, children }: MealsProviderProps) => {
     userId,
     makeRequest: true,
   });
-  const { handleDeleteMeal } = deleteMeal();
 
+  const { handleDeleteMeal } = deleteMeal();
+  const { handleEditMeal, error: editMealError } = editMeal();
   const { handleCreateMeal, error: createMealError } = createMeal();
 
   const hasLoadedAllData = [!!stats, !!meals].every(Boolean);
@@ -50,12 +52,35 @@ const MealsProvider = ({ userId, children }: MealsProviderProps) => {
     }
   };
 
+  const editTheMeal = async (meal: NewMeal) => {
+    try {
+      const editedMeal = await handleEditMeal({
+        mealId: meal.id!,
+        meal: {
+          name: meal.name,
+          description: meal.description,
+          eatedAt: meal.eatedAt,
+          onTheDiet: meal.onTheDiet,
+        },
+      });
+
+      setMeals((prevMeals) => {
+        return prevMeals.map((meal) => {
+          if (meal.id === editedMeal.id) {
+            return editedMeal;
+          }
+          return meal;
+        });
+      });
+    } catch {
+      throw new Error(editMealError!);
+    }
+  };
+
   const deleteViewedMeal = async (mealId: string) => {
     await handleDeleteMeal(mealId);
     setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== mealId));
   };
-
-  console.log("aloooo", hasLoadedAllData, stats?.stats);
 
   return (
     <MealsContext.Provider
@@ -68,6 +93,7 @@ const MealsProvider = ({ userId, children }: MealsProviderProps) => {
         meals: meals,
         createNewMeal,
         deleteViewedMeal,
+        editTheMeal,
       }}
     >
       {hasLoadedAllData ? children : <Loading />}

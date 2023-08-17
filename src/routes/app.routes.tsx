@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Feedback, NewMeal, Home, Stats, ViewMeal } from "@screens";
+import { Meal } from "@services/meals/getMeals/types";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -7,7 +8,9 @@ export type AppRoutesParamList = {
   Home: undefined;
   Stats: undefined;
   Feedback: undefined;
-  NewMeal: undefined;
+  NewMeal: {
+    meal?: Meal;
+  };
   ViewMeal: {
     mealId: string;
   };

@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { Container, Form, FormRow, SelectWrapper } from "./styles";
 import { View } from "react-native";
-import { useAuth, useMeals } from "@hooks";
+import { useMeals } from "@hooks";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +17,8 @@ import {
   TextError,
   Typographic,
 } from "@components";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { AppRoutesParamList } from "@routes/app.routes";
 
 const newMealFormSchema = z.object({
   name: z
@@ -54,8 +55,39 @@ const newMealFormSchema = z.object({
 type NewMealFormInputs = z.infer<typeof newMealFormSchema>;
 
 const NewMeal: FC = () => {
-  const { createNewMeal } = useMeals();
+  const { editTheMeal, createNewMeal } = useMeals();
   const { goBack } = useNavigation();
+  const { params } = useRoute<RouteProp<AppRoutesParamList, "NewMeal">>();
+
+  const editMeal: NewMealFormInputs = (() => {
+    if (!params?.meal)
+      return {
+        name: "",
+        description: "",
+        onTheDiet: null,
+        date: "",
+        time: "",
+      };
+
+    const dateString = params.meal.eatedAt;
+    const date = new Date(dateString);
+
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth().toString().padStart(2, "0");
+    const day = date.getUTCDate().toString().padStart(2, "0");
+
+    const hours = (date.getUTCHours() - 3).toString().padStart(2, "0");
+    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+
+    return {
+      name: params.meal.name,
+      description: params.meal.description,
+      onTheDiet: params.meal.onTheDiet === 1 ? "Sim" : "Não",
+      date: `${day}/${month}/${year}`,
+      time: `${hours}:${minutes}`,
+    };
+  })();
+
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -67,6 +99,7 @@ const NewMeal: FC = () => {
     formState: { isSubmitting, errors },
   } = useForm<NewMealFormInputs>({
     resolver: zodResolver(newMealFormSchema),
+    defaultValues: editMeal,
   });
 
   const formatTime = (text: string) => {
@@ -102,9 +135,12 @@ const NewMeal: FC = () => {
     return isoFormattedDateTime;
   };
 
-  const handlePressNewMeal = async (data: NewMealFormInputs) => {
+  const handlePressActionButton = async (data: NewMealFormInputs) => {
     try {
-      await createNewMeal({
+      const action = params?.meal ? editTheMeal : createNewMeal;
+
+      await action({
+        id: params?.meal?.id,
         name: data.name,
         description: data.description,
         eatedAt: formatDateTimeToISO(data.date, data.time),
@@ -120,7 +156,10 @@ const NewMeal: FC = () => {
 
   return (
     <Container>
-      <Header title="Nova refeição" type="info" />
+      <Header
+        title={params?.meal ? "Editar refeição" : "Nova refeição"}
+        type="info"
+      />
       <ScreenContent>
         <Space size={32} />
         <Form>
@@ -202,8 +241,8 @@ const NewMeal: FC = () => {
           />
         </Form>
         <Button
-          label="Cadastrar refeição"
-          onPress={handleSubmit(handlePressNewMeal)}
+          label={params?.meal ? "Salvar alterações" : "Cadastrar refeição"}
+          onPress={handleSubmit(handlePressActionButton)}
           isLoading={isSubmitting}
         />
         <Space size={32} />
