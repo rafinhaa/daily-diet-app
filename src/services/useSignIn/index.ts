@@ -2,7 +2,7 @@ import { useState } from "react";
 import { api } from "../api";
 
 import { SignInDataParams, SignInData } from "./types";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 
 const useSignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,16 +11,19 @@ const useSignIn = () => {
   const handleSignIn = async ({
     email,
     password,
-  }: SignInDataParams): Promise<SignInData> => {
+  }: SignInDataParams): Promise<AxiosResponse<SignInData>> => {
     try {
       setIsLoading(true);
-      const { data } = await api.post<SignInData>("auth/signin", {
-        email,
-        password,
-      });
+      const response: AxiosResponse<SignInData> = await api.post<SignInData>(
+        "auth/signin",
+        {
+          email,
+          password,
+        }
+      );
 
       setIsLoading(false);
-      return data;
+      return response;
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.data?.statusCode === 400) {

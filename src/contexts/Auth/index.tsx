@@ -1,7 +1,8 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 import { AuthContextData, AuthProviderProps, LoginData, User } from "./types";
 import { useSignIn } from "@services";
+import { userStorage } from "../../storages";
 
 const AuthContext = createContext({} as AuthContextData);
 
@@ -16,16 +17,25 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signIn = async ({ email, password }: LoginData) => {
     try {
-      const { user } = await handleSignIn({
+      const response = await handleSignIn({
         email,
         password,
       });
 
-      setUser(user);
+      await userStorage.setUser(response.data.user);
+      setUser(response.data.user);
     } catch (error) {
       throw error;
     }
   };
+
+  useEffect(() => {
+    const getUser = async () => {
+      const user = await userStorage.getUser();
+      if (user) setUser(user);
+    };
+    getUser();
+  }, []);
 
   return (
     <AuthContext.Provider
