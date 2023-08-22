@@ -4,6 +4,7 @@ import { PropsWithChildren } from "react";
 
 export type MealsProviderProps = PropsWithChildren & {
   userId: string;
+  logout: () => void;
 };
 
 export type Stats = GetStatsData["stats"];

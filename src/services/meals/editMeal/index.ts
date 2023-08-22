@@ -7,6 +7,7 @@ import { AxiosError } from "axios";
 const editMeal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [statusCode, setStatusCode] = useState<string | null>(null);
   const [data, setData] = useState<EditMealData | null>(null);
 
   const handleEditMeal = async ({ mealId, meal }: EditMealParams) => {
@@ -20,6 +21,7 @@ const editMeal = () => {
       return data.meal;
     } catch (error) {
       if (error instanceof AxiosError) {
+        setStatusCode(error.response?.data?.statusCode);
         if (error.response?.data?.statusCode === 400) {
           setError("Ocorreu um erro com a validação dos dados!");
         }
@@ -38,7 +40,7 @@ const editMeal = () => {
     }
   };
 
-  return { isLoading, error, data, handleEditMeal };
+  return { isLoading, error, data, statusCode, handleEditMeal };
 };
 
 export default editMeal;

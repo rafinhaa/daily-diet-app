@@ -7,6 +7,7 @@ import { AxiosError } from "axios";
 const deleteMeal = (props?: DeleteMealParams) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [statusCode, setStatusCode] = useState<string | null>(null);
 
   const handleDeleteMeal = async (mealId: string) => {
     try {
@@ -14,6 +15,7 @@ const deleteMeal = (props?: DeleteMealParams) => {
       await api.delete(`meal/${mealId}`);
     } catch (error) {
       if (error instanceof AxiosError) {
+        setStatusCode(error.response?.data?.statusCode);
         if (error.response?.data?.statusCode === 400) {
           setError("Usuário e/ou senha inválidos!");
         }
@@ -32,7 +34,7 @@ const deleteMeal = (props?: DeleteMealParams) => {
     }
   };
 
-  return { isLoading, error, handleDeleteMeal };
+  return { isLoading, error, statusCode, handleDeleteMeal };
 };
 
 export default deleteMeal;

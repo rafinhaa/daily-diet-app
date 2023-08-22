@@ -11,6 +11,7 @@ const useStats = ({
 }: GetStatsParams) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [statusCode, setStatusCode] = useState<string | null>(null);
   const [data, setData] = useState<GetStatsData | null>(null);
 
   const getStats = async () => {
@@ -21,6 +22,7 @@ const useStats = ({
       setData(data);
     } catch (error) {
       if (error instanceof AxiosError) {
+        setStatusCode(error.response?.data?.statusCode);
         if (error.response?.data?.statusCode === 400) {
           setError("Usuário e/ou senha inválidos!");
         }
@@ -41,7 +43,7 @@ const useStats = ({
     getStats();
   }, [touch]);
 
-  return { isLoading, error, data };
+  return { isLoading, error, data, statusCode };
 };
 
 export default useStats;

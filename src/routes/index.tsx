@@ -5,12 +5,12 @@ import { SignInRoutes } from "./signIn.routes";
 import { MealsProvider } from "@contexts";
 
 export const Routes = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <NavigationContainer>
       {user ? (
-        <MealsProvider userId={user.id}>
+        <MealsProvider userId={user.id} logout={logout}>
           <AppRoutes />
         </MealsProvider>
       ) : (

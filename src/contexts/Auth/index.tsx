@@ -29,6 +29,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const logout = () => {
+    userStorage.setUser(null);
+    setUser(null);
+  };
+
   useEffect(() => {
     const getUser = async () => {
       const user = await userStorage.getUser();
@@ -39,7 +44,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, isLoadingSignIn, signInError, signIn }}
+      value={{ user, isLoadingSignIn, signInError, signIn, logout }}
     >
       {children}
     </AuthContext.Provider>

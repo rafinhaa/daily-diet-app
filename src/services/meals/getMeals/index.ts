@@ -8,6 +8,7 @@ const getMeals = ({ userId, makeRequest = false }: GetMealsParams) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<GetMealsData | null>(null);
+  const [statusCode, setStatusCode] = useState<string | null>(null);
 
   const getMeals = async () => {
     try {
@@ -16,6 +17,7 @@ const getMeals = ({ userId, makeRequest = false }: GetMealsParams) => {
 
       setData(data);
     } catch (error) {
+      setStatusCode(error.response?.data?.statusCode);
       if (error instanceof AxiosError) {
         if (error.response?.data?.statusCode === 400) {
           setError("Usuário e/ou senha inválidos!");
@@ -37,7 +39,7 @@ const getMeals = ({ userId, makeRequest = false }: GetMealsParams) => {
     getMeals();
   }, []);
 
-  return { isLoading, error, data };
+  return { isLoading, error, data, statusCode };
 };
 
 export default getMeals;

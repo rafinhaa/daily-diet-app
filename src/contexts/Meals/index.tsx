@@ -13,23 +13,39 @@ import { editMeal } from "@services";
 
 const MealsContext = createContext({} as MealsContextData);
 
-const MealsProvider = ({ userId, children }: MealsProviderProps) => {
+const MealsProvider = ({ userId, logout, children }: MealsProviderProps) => {
   const [meals, setMeals] = React.useState<MealsContextData["meals"]>([]);
   const [touchStats, setTouchStats] = React.useState(false);
 
-  const { data: stats } = useStats({
+  const {
+    data: stats,
+    error: statsError,
+    statusCode: statsStatusCode,
+  } = useStats({
     userId,
     makeRequest: true,
     touch: touchStats,
   });
-  const { data: allMeals } = getMeals({
+  const {
+    data: allMeals,
+    error: allMealsError,
+    statusCode: allMealsStatusCode,
+  } = getMeals({
     userId,
     makeRequest: true,
   });
 
-  const { handleDeleteMeal } = deleteMeal();
-  const { handleEditMeal, error: editMealError } = editMeal();
-  const { handleCreateMeal, error: createMealError } = createMeal();
+  const { handleDeleteMeal, statusCode: deleteMealStatusCode } = deleteMeal();
+  const {
+    handleEditMeal,
+    error: editMealError,
+    statusCode: editMealStatusCode,
+  } = editMeal();
+  const {
+    handleCreateMeal,
+    error: createMealError,
+    statusCode: createMealStatusCode,
+  } = createMeal();
 
   const hasLoadedAllData = [!!stats, !!meals].every(Boolean);
 
@@ -90,6 +106,24 @@ const MealsProvider = ({ userId, children }: MealsProviderProps) => {
     setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== mealId));
     updateStats();
   };
+
+  useEffect(() => {
+    const hasForbiddenError = [
+      statsStatusCode?.toString(),
+      allMealsStatusCode?.toString(),
+      deleteMealStatusCode?.toString(),
+      editMealStatusCode?.toString(),
+      createMealStatusCode?.toString(),
+    ].includes("403");
+
+    if (hasForbiddenError) logout();
+  }, [
+    statsStatusCode,
+    allMealsStatusCode,
+    deleteMealStatusCode,
+    editMealStatusCode,
+    createMealStatusCode,
+  ]);
 
   return (
     <MealsContext.Provider

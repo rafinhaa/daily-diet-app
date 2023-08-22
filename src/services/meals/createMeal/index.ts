@@ -3,10 +3,12 @@ import { api } from "../../api";
 
 import { CreateMealParams, CreateMealData, CreateMealResponse } from "./types";
 import { AxiosError } from "axios";
+import { set } from "react-hook-form";
 
 const createMeal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [statusCode, setStatusCode] = useState<string | null>(null);
   const [data, setData] = useState<CreateMealData | null>(null);
 
   const handleCreateMeal = async ({ userId, meal }: CreateMealParams) => {
@@ -20,6 +22,7 @@ const createMeal = () => {
       return data.meal;
     } catch (error) {
       if (error instanceof AxiosError) {
+        setStatusCode(error.response?.data?.statusCode);
         if (error.response?.data?.statusCode === 400) {
           setError("Ocorreu um erro com a validação dos dados!");
         }
@@ -38,7 +41,7 @@ const createMeal = () => {
     }
   };
 
-  return { isLoading, error, data, handleCreateMeal };
+  return { isLoading, error, data, statusCode, handleCreateMeal };
 };
 
 export default createMeal;
