@@ -4,7 +4,11 @@ import { api } from "../api";
 import { GetStatsParams, GetStatsData } from "./types";
 import { AxiosError } from "axios";
 
-const useStats = ({ userId, makeRequest = false }: GetStatsParams) => {
+const useStats = ({
+  userId,
+  makeRequest = false,
+  touch = false,
+}: GetStatsParams) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<GetStatsData | null>(null);
@@ -33,9 +37,9 @@ const useStats = ({ userId, makeRequest = false }: GetStatsParams) => {
   };
 
   useEffect(() => {
-    if (!makeRequest) return;
+    if (!makeRequest || touch) return;
     getStats();
-  }, []);
+  }, [touch]);
 
   return { isLoading, error, data };
 };

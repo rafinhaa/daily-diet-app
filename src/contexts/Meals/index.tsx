@@ -15,10 +15,12 @@ const MealsContext = createContext({} as MealsContextData);
 
 const MealsProvider = ({ userId, children }: MealsProviderProps) => {
   const [meals, setMeals] = React.useState<MealsContextData["meals"]>([]);
+  const [touchStats, setTouchStats] = React.useState(false);
 
   const { data: stats } = useStats({
     userId,
     makeRequest: true,
+    touch: touchStats,
   });
   const { data: allMeals } = getMeals({
     userId,
@@ -35,6 +37,10 @@ const MealsProvider = ({ userId, children }: MealsProviderProps) => {
     setMeals(allMeals?.meals || []);
   }, [allMeals]);
 
+  const updateStats = () => {
+    setTouchStats((oldState) => !oldState);
+  };
+
   const createNewMeal = async (meal: NewMeal) => {
     try {
       const newMeal = await handleCreateMeal({
@@ -47,6 +53,7 @@ const MealsProvider = ({ userId, children }: MealsProviderProps) => {
         },
       });
       setMeals((prevMeals) => [...prevMeals, newMeal]);
+      updateStats();
     } catch {
       throw new Error(createMealError!);
     }
@@ -72,6 +79,7 @@ const MealsProvider = ({ userId, children }: MealsProviderProps) => {
           return meal;
         });
       });
+      updateStats();
     } catch {
       throw new Error(editMealError!);
     }
@@ -80,6 +88,7 @@ const MealsProvider = ({ userId, children }: MealsProviderProps) => {
   const deleteViewedMeal = async (mealId: string) => {
     await handleDeleteMeal(mealId);
     setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== mealId));
+    updateStats();
   };
 
   return (
