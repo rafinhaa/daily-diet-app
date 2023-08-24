@@ -26,7 +26,7 @@ const SignIn: FC = () => {
   };
 
   const handlePressNewAccount = () => {
-    navigate("NewUser");
+    navigate("NewAccount");
   };
 
   return (
