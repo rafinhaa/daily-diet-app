@@ -39,4 +39,5 @@ export const Label = styled(Typographic.Body).attrs({
 })<ButtonPropsStyle>`
   color: ${({ variant, theme }) =>
     variant === "primary" ? theme.COLORS.WHITE : theme.COLORS.GRAY_700};
+  text-decoration: ${({ variant }) => variant === "tertiary" && "underline"};
 `;

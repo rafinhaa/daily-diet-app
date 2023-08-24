@@ -3,13 +3,15 @@ import { Container, Logo } from "./styles";
 import { Button, Input, Modal, Space } from "@components";
 
 import logo from "@assets/images/logo.png";
-import useAuth from "@hooks/useAuth";
+import { useAuth } from "@hooks";
+import { useNavigation } from "@react-navigation/native";
 
 const SignIn: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
 
+  const { navigate } = useNavigation();
   const { signIn, isLoadingSignIn, signInError } = useAuth();
 
   const handlePressSignIn = async () => {
@@ -21,6 +23,10 @@ const SignIn: FC = () => {
     } catch {
       setShowModal(true);
     }
+  };
+
+  const handlePressNewAccount = () => {
+    navigate("NewUser");
   };
 
   return (
@@ -45,6 +51,12 @@ const SignIn: FC = () => {
         label="Entrar"
         onPress={handlePressSignIn}
         isLoading={isLoadingSignIn}
+      />
+      <Space size={16} />
+      <Button
+        variant="tertiary"
+        label="Criar conta"
+        onPress={handlePressNewAccount}
       />
       <Modal
         visible={showModal}
