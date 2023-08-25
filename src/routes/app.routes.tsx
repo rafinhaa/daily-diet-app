@@ -7,7 +7,9 @@ const { Navigator, Screen } = createNativeStackNavigator();
 export type AppRoutesParamList = {
   Home: undefined;
   Stats: undefined;
-  Feedback: undefined;
+  Feedback: {
+    status: "success" | "fail";
+  };
   NewMeal: {
     meal?: Meal;
   };

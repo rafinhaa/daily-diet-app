@@ -4,8 +4,15 @@ import { Button, Space, Typographic } from "@components";
 
 import feedbackSuccess from "../../assets/images/feedback-success.png";
 import feedbackFail from "../../assets/images/feedback-fail.png";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { AppRoutesParamList } from "@routes/app.routes";
 
 const Feedback: FC = () => {
+  const {
+    params: { status },
+  } = useRoute<RouteProp<AppRoutesParamList, "Feedback">>();
+  const { navigate } = useNavigation();
+
   const SuccessMessage: FC = () => (
     <Typographic.Body bold={false}>
       Você continua <Typographic.Body bold>dentro da dieta.</Typographic.Body>{" "}
@@ -43,7 +50,11 @@ const Feedback: FC = () => {
       image: feedbackFail,
       Title: FailTitle,
     },
-  }["success"];
+  }[status];
+
+  const handlePressConfirm = () => {
+    navigate("Home");
+  };
 
   return (
     <Container>
@@ -53,7 +64,7 @@ const Feedback: FC = () => {
       <Space size={40} />
       <FeedbackImage source={FeedbackMapping.image} />
       <Space size={32} />
-      <Button label="Ir para a página inicial" />
+      <Button label="Ir para a página inicial" onPress={handlePressConfirm} />
     </Container>
   );
 };

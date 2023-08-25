@@ -56,7 +56,7 @@ type NewMealFormInputs = z.infer<typeof newMealFormSchema>;
 
 const NewMeal: FC = () => {
   const { editTheMeal, createNewMeal } = useMeals();
-  const { goBack } = useNavigation();
+  const { navigate } = useNavigation();
   const { params } = useRoute<RouteProp<AppRoutesParamList, "NewMeal">>();
 
   const editMeal: NewMealFormInputs = (() => {
@@ -88,14 +88,12 @@ const NewMeal: FC = () => {
     };
   })();
 
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const {
     control,
     handleSubmit,
-    reset,
     formState: { isSubmitting, errors },
   } = useForm<NewMealFormInputs>({
     resolver: zodResolver(newMealFormSchema),
@@ -146,8 +144,9 @@ const NewMeal: FC = () => {
         eatedAt: formatDateTimeToISO(data.date, data.time),
         onTheDiet: data.onTheDiet === "Sim" ? true : false,
       });
-      reset();
-      setShowConfirmationModal(true);
+      navigate("Feedback", {
+        status: data.onTheDiet === "Sim" ? "success" : "fail",
+      });
     } catch (error) {
       setErrorMessage(error as string);
       setShowErrorModal(true);
@@ -247,16 +246,6 @@ const NewMeal: FC = () => {
         />
         <Space size={32} />
       </ScreenContent>
-      <Modal
-        title="Nova refeição cadastrada"
-        primaryButtonLabel="OK"
-        secondaryButtonLabel="Voltar"
-        visible={showConfirmationModal}
-        onRequestClose={goBack}
-        onRequestConfirm={() => {
-          setShowConfirmationModal(false);
-        }}
-      />
       <Modal
         title={errorMessage}
         primaryButtonLabel="OK"
