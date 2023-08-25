@@ -9,8 +9,6 @@ type StyledCardProps = Pick<CardProps, "type"> & {
 };
 
 export const Container = styled.TouchableOpacity<StyledCardProps>`
-  flex: 1;
-  width: 100%;
   padding: ${({ large }) => (large ? "20px 16px" : "16px")};
   align-items: center;
   justify-content: center;

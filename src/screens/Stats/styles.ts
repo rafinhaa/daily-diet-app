@@ -7,11 +7,10 @@ export const Container = styled.View`
 export const CardContent = styled.View`
   flex: 1;
   gap: 12px;
-  max-height: 309px;
 `;
 
 export const CardRow = styled.View`
-  flex: 1;
+  width: 100%;
   flex-direction: row;
   gap: 12px;
 `;

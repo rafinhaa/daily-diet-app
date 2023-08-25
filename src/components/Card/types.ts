@@ -1,7 +1,8 @@
+import { StyleProp, ViewStyle } from "react-native";
 import { DefaultTheme } from "styled-components/native";
 
-export type CardProps<T> = {
-  title: T;
+export type CardProps = {
+  title: string | number;
   description: string;
   type: "primary" | "secondary" | "info";
   titleSize?: keyof Pick<
@@ -9,4 +10,5 @@ export type CardProps<T> = {
     "EXTRA_LARGE" | "SUPER_LARGE"
   >;
   onCardPress?: () => void;
+  containerContentStyle?: StyleProp<ViewStyle>;
 };

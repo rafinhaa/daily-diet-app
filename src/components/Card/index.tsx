@@ -10,6 +10,7 @@ const Card: FC<CardProps> = ({
   titleSize = "EXTRA_LARGE",
   type,
   onCardPress,
+  containerContentStyle,
 }) => {
   const hasCardPress = !!onCardPress;
   const opacity = hasCardPress ? 0.5 : 1;
@@ -28,6 +29,7 @@ const Card: FC<CardProps> = ({
       activeOpacity={opacity}
       large={hasCardPress}
       onPress={onCardPress}
+      style={containerContentStyle}
     >
       <IconMapping isVisible={titleSize === "SUPER_LARGE"} />
       <Title size={titleSize}>{title}</Title>

@@ -39,11 +39,13 @@ const Stats: FC = () => {
               title={stats.dietMeals}
               description="refeições dentro da dieta"
               type="primary"
+              containerContentStyle={{ flex: 1 }}
             />
             <Card
               title={stats.nonDietMeals}
               description="refeições fora da dieta"
               type="secondary"
+              containerContentStyle={{ flex: 1 }}
             />
           </CardRow>
         </CardContent>
