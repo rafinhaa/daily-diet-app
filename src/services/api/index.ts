@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://daily-diet-api.codedev.cyou/",
+  baseURL: "http://192.168.15.104:3333",
 });

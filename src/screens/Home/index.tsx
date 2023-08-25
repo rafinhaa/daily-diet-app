@@ -1,13 +1,13 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Container, Header, Logo, User } from "./styles";
-import { Button, Card, Space, Typographic } from "@components";
+import { Button, Card, Modal, Space, Typographic } from "@components";
 
 import logo from "@assets/images/logo.png";
 import user from "@assets/images/user.png";
-import { SectionList } from "react-native";
+import { Pressable, SectionList, Touchable } from "react-native";
 import { MealItem } from "./components";
 import { useNavigation } from "@react-navigation/native";
-import { useMeals } from "@hooks";
+import { useAuth, useMeals } from "@hooks";
 import { toPercent } from "@utils";
 
 interface ListMeal {
@@ -24,7 +24,9 @@ interface DateEntry {
 
 const Home: FC = () => {
   const { stats, statsInfo, meals } = useMeals();
+  const { logout } = useAuth();
   const { navigate } = useNavigation();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const listMeals = meals.reduce((listMeals: DateEntry[], item) => {
     const createdAtDate = new Date(item.eatedAt);
@@ -72,11 +74,17 @@ const Home: FC = () => {
     navigate("Stats");
   };
 
+  const handlePressLogout = () => {
+    setShowLogoutModal(true);
+  };
+
   return (
     <Container>
       <Header>
         <Logo source={logo} />
-        <User source={user} />
+        <Pressable onPress={handlePressLogout}>
+          <User source={user} />
+        </Pressable>
       </Header>
       <Space size={32} />
       <Card
@@ -107,6 +115,14 @@ const Home: FC = () => {
         renderSectionHeader={({ section: { title } }) => (
           <Typographic.Title size="LARGE">{title}</Typographic.Title>
         )}
+      />
+      <Modal
+        visible={showLogoutModal}
+        onRequestClose={() => setShowLogoutModal(false)}
+        onRequestConfirm={logout}
+        title={"Deseja sair?"}
+        primaryButtonLabel="Sim"
+        secondaryButtonLabel="Não"
       />
     </Container>
   );
